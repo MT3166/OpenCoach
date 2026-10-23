@@ -1,0 +1,30 @@
+{% load static %}<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#183f35"><title>{% block title %}{{ brand_name }} · 练习有迹可循{% endblock %}</title><link rel="stylesheet" href="{% static 'app.css' %}"><script src="{% static 'app.js' %}" defer></script></head>
+<body class="{% if user.is_authenticated %}app-body{% else %}auth-body{% endif %}">
+<svg class="svg-library" aria-hidden="true"><defs>
+<symbol id="i-home" viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10H4V10M9 20v-7h6v7"/></symbol>
+<symbol id="i-calendar" viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v5m10-5v5M3 11h18m-13 5h.01m4 0h.01m4 0h.01"/></symbol>
+<symbol id="i-people" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 21v-3a6 6 0 0 1 12 0v3m2-17a3 3 0 0 1 0 6m2 11v-3a5 5 0 0 0-2-4"/></symbol>
+<symbol id="i-training" viewBox="0 0 24 24"><path d="M3 14h4l3-9 4 15 3-9h4"/></symbol>
+<symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 22v-2a8 8 0 0 1 16 0v2"/></symbol>
+<symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-6-6 6 6-6 6"/></symbol>
+<symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+</defs></svg>
+{% if user.is_authenticated %}
+<header class="app-header"><a class="brand" href="{% url 'home' %}"><span class="brand-mark">o</span><span>{{ brand_name }}<small>练习，有迹可循。</small></span></a><div class="header-person"><span class="role-pill">{% if user.is_staff %}教练工作室{% else %}{{ user.student.name }}的训练手册{% endif %}</span><form action="{% url 'logout' %}" method="post">{% csrf_token %}<button class="text-button muted" type="submit">退出</button></form></div></header>
+<nav class="app-nav" aria-label="主要导航">
+{% if user.is_staff %}
+<a class="{% if nav == 'home' %}active{% endif %}" href="{% url 'coach_home' %}"><svg class="icon"><use href="#i-home"/></svg><span>工作台</span></a>
+<a class="{% if nav == 'sessions' %}active{% endif %}" href="{% url 'coach_sessions' %}"><svg class="icon"><use href="#i-calendar"/></svg><span>排课</span></a>
+<a class="{% if nav == 'students' %}active{% endif %}" href="{% url 'coach_students' %}"><svg class="icon"><use href="#i-people"/></svg><span>学员</span></a>
+{% else %}
+<a class="{% if nav == 'home' %}active{% endif %}" href="{% url 'student_home' %}"><svg class="icon"><use href="#i-home"/></svg><span>首页</span></a>
+<a class="{% if nav == 'sessions' %}active{% endif %}" href="{% url 'student_sessions' %}"><svg class="icon"><use href="#i-calendar"/></svg><span>约课</span></a>
+<a class="{% if nav == 'training' %}active{% endif %}" href="{% url 'student_training' %}"><svg class="icon"><use href="#i-training"/></svg><span>训练</span></a>
+<a class="{% if nav == 'profile' %}active{% endif %}" href="{% url 'student_profile' %}"><svg class="icon"><use href="#i-user"/></svg><span>我的</span></a>
+{% endif %}<div class="nav-foot">MOVE WITH<br>INTENTION.<span>和 {{ coach_name }} 一起练习</span></div></nav>
+{% endif %}
+<main class="{% if user.is_authenticated %}main{% else %}auth-main{% endif %}">
+{% if messages %}<div class="messages" aria-live="polite">{% for message in messages %}<div class="message {{ message.tags }}">{{ message }}</div>{% endfor %}</div>{% endif %}
+{% block content %}{% endblock %}
+</main></body></html>

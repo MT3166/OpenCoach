@@ -1,0 +1,4 @@
+{% extends 'base.html' %}{% block content %}
+<div class="auth-layout"><section class="auth-story"><a class="brand" href="{% url 'login' %}"><span class="brand-mark">o</span><span>{{ brand_name }}</span></a><span class="eyebrow">YOUR PERSONAL TRAINING JOURNAL</span><h1>每一次练习，<br>都有<span>回响。</span></h1><p>从一节课，到一种生活方式。<br>与 {{ coach_name }} 一起，让进步看得见。</p><div class="auth-orbit" aria-hidden="true"><i></i><i></i><i></i><b>practice<br>with purpose.</b></div><div class="story-foot">一对一私教 <span>·</span> 小班课程 <span>·</span> 课后练习</div></section>
+<section class="auth-panel"><span class="eyebrow">WELCOME BACK</span><h2>今天，也为自己<br>留一点时间。</h2><p class="muted">登录你的账号，继续训练旅程。</p><form method="post" class="stack-form">{% csrf_token %}{% include 'partials/fields.html' %}<button class="button primary full" type="submit">登录 <svg class="icon"><use href="#i-arrow"/></svg></button></form><p class="auth-help">首次加入？请使用教练发给你的邀请链接。<br>忘记账号或密码，请联系教练。</p></section></div>
+{% endblock %}
